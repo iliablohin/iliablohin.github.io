@@ -148,8 +148,8 @@ footer p{font-size:.75rem;color:var(--muted)}
     <li><a href="#about"><span data-lang="en">About</span><span data-lang="es">Sobre mí</span></a></li>
     <li><a href="#contact"><span data-lang="en">Contact</span><span data-lang="es">Contacto</span></a></li>
     <li>
-      <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
-      <button class="lang-btn" id="btn-es" onclick="setLang('es')">ES</button>
+      <button class="lang-btn active" id="btn-en">EN</button>
+      <button class="lang-btn" id="btn-es">ES</button>
     </li>
   </ul>
 </nav>
@@ -407,7 +407,7 @@ footer p{font-size:.75rem;color:var(--muted)}
   <p style="font-size:.72rem"><span data-lang="en">SGAE nº 146652 · Spain</span><span data-lang="es">Socio SGAE nº 146652 · España</span></p>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 document.getElementById('yr').textContent = new Date().getFullYear();
 
 function setLang(lang) {
@@ -418,11 +418,26 @@ function setLang(lang) {
   localStorage.setItem('lang', lang);
 }
 
+document.getElementById('btn-en').addEventListener('click', () => setLang('en'));
+document.getElementById('btn-es').addEventListener('click', () => setLang('es'));
+
 (function(){
   const saved = localStorage.getItem('lang');
   const browser = navigator.language.startsWith('es') ? 'es' : 'en';
   setLang(saved || browser);
 })();
+
+window.addEventListener('scroll', () => {
+  let cur = '';
+  document.querySelectorAll('section[id]').forEach(s => {
+    if (window.scrollY >= s.offsetTop - 120) cur = s.id;
+  });
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    const h = a.getAttribute('href').replace('#','');
+    a.style.color = h === cur ? 'var(--gold)' : '';
+  });
+}, {passive:true});
+</script>
 
 // Nav active state on scroll
 const navLinks = document.querySelectorAll('.nav-links a');
