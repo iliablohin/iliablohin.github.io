@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Ilia Blokhin — Composer · Sound Designer</title>
+<meta name="description" content="Film, TV & game composer based in Spain. Original scores, sound design, and contemporary music production."/>
+
+<!-- PRELOAD LANGUAGE BEFORE RENDER -->
+<script>
+(function(){
+  const saved = localStorage.getItem('lang');
+  const pathLang = location.pathname.startsWith('/en') ? 'en' : location.pathname.startsWith('/es') ? 'es' : null;
+  const browser = navigator.language.startsWith('es') ? 'es' : 'en';
+  const params = new URLSearchParams(location.search);
+  const paramLang = params.get('lang');
+  const lang = paramLang || pathLang || saved || browser || 'es';
+  document.documentElement.lang = lang;
+  document.documentElement.className = lang;
+})();
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+/* LANGUAGE SYSTEM */
+html.en [data-lang="es"],
+html.es [data-lang="en"]{
+  position:absolute;
+  opacity:0;
+  pointer-events:none;
+}
+
+[data-lang]{
+  transition:opacity .25s ease;
+}
+
+html.en [data-lang="en"],
+html.es [data-lang="es"]{
+  position:relative;
+  opacity:1;
+}
+
+/* FADE CLASS */
+html.lang-fade [data-lang]{opacity:0}
+
+body{background:#080808;color:#e8e4dc;font-family:'Outfit',sans-serif}
+
+.lang-btn.active{color:#b89a5a}
+</style>
+</head>
+
+<body>
+
+<button id="btn-en">EN</button>
+<button id="btn-es">ES</button>
+
+<h1>
+  <span data-lang="en">Hello</span>
+  <span data-lang="es">Hola</span>
+</h1>
+
+<script>
+function setLang(lang) {
+  document.documentElement.classList.add('lang-fade');
+
+  setTimeout(() => {
+    document.documentElement.classList.remove('en','es');
+    document.documentElement.classList.add(lang);
+    document.documentElement.lang = lang;
+
+    localStorage.setItem('lang', lang);
+
+    // URL routing
+    const url = new URL(window.location);
+    url.searchParams.set('lang', lang);
+    history.replaceState(null, '', url);
+
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    document.getElementById('btn-es').classList.toggle('active', lang === 'es');
+
+    document.documentElement.classList.remove('lang-fade');
+  }, 150);
+}
+
+// BUTTONS
+document.getElementById('btn-en').addEventListener('click', () => setLang('en'));
+document.getElementById('btn-es').addEventListener('click', () => setLang('es'));
+
+// INIT STATE
+(function(){
+  const lang = document.documentElement.lang;
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  document.getElementById('btn-es').classList.toggle('active', lang === 'es');
+})();
+</script>
+
+</body>
+</html>
